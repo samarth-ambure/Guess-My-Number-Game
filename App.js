@@ -1,28 +1,52 @@
 import { useState } from 'react';
-import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import StartGameScreen from './Screens/StartGameScreen';
 import GameScreen from './Screens/GameScreen';
+import GameOverScreen from './Screens/GameOverScreen';
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
+  const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessCounts, setGuessCounts] = useState(0);
 
   function pickedNumberHandler(pickedNumber) {
     setUserNumber(pickedNumber);
+    setGameIsOver(false);
   }
 
-  // Logic to switch screens
+ function gameOverHandler(numberOfRounds) {
+  setGameIsOver(true);
+  setGuessCounts(numberOfRounds); // This sets the value for line 36
+}
+
+  function startNewGameHandler() {
+  setUserNumber(null);
+  setGuessCounts(0); // Reset for the next game
+}
+
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 
   if (userNumber) {
-  screen = <GameScreen userNumber={userNumber} />;
+    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler} />;
+  }
+
+  if (gameIsOver && userNumber) {
+  screen = (
+    <GameOverScreen 
+      userNumber={userNumber} 
+      roundsNumber={guessCounts} // Make sure guessCounts is updated in your gameOverHandler
+      onRestart={startNewGameHandler} 
+    />
+  );
 }
 
   return (
     <LinearGradient colors={['#4e0329', '#ddb52f']} style={styles.rootScreen}>
       <ImageBackground 
-        source={{ uri: 'https://images.unsplash.com/photo-1595053809115-f2aa7481979b?q=80&w=2070' }} 
+        source={require('./Screens/Images/hand-rolling-the-dice-image.jpg')}
         resizeMode="cover"
         style={styles.rootScreen}
         imageStyle={styles.backgroundImage}

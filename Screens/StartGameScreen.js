@@ -1,4 +1,4 @@
-import { TextInput, StyleSheet, View, Alert } from 'react-native';
+import { TextInput, StyleSheet, View, Alert, Text } from 'react-native'; // Added Text to imports
 import { useState } from 'react';
 import PrimaryButtons from '../compononts/PrimaryButtons';
 
@@ -10,13 +10,12 @@ function StartGameScreen({ onPickNumber }) {
     }
 
     function resetInputHandler() {
-        setEnteredNumber(''); // Clears the text input
+        setEnteredNumber(''); 
     }
 
     function confirmInputHandler() {
         const chosenNumber = parseInt(enteredNumber);
 
-        // Validation: Must be a number, between 1-99
         if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
             Alert.alert(
                 'Invalid number!', 
@@ -26,11 +25,14 @@ function StartGameScreen({ onPickNumber }) {
             return;
         }
         
-        onPickNumber(chosenNumber); // Passes the number to App.js to switch screens
+        onPickNumber(chosenNumber); 
     }
 
     return (
         <View style={Styles.inputContainer}>
+            {/* Added Instruction Text */}
+            <Text style={Styles.instructionText}>Enter A Number</Text>
+            
             <TextInput 
                 style={Styles.numberInput}
                 maxLength={2}
@@ -54,26 +56,27 @@ function StartGameScreen({ onPickNumber }) {
 
 export default StartGameScreen;
 
-// ... (Styles stay the same as your previous message)
-
-// ... (Styles stay the same as your previous message)
-
-
-
 const Styles = StyleSheet.create({
     inputContainer: {
         marginHorizontal: 24,
-        justifyContent: 'center', // Fixed typo
-        alignItems: 'center', // Fixed typo
+        justifyContent: 'center', 
+        alignItems: 'center', 
         padding: 16,
         marginTop: 100,
-        backgroundColor: '#3b0622', // Changed to a darker plum for better contrast
+        backgroundColor: '#3b0622', 
         borderRadius: 8,
-        elevation: 4, // Shadow for Android
-        shadowColor: 'black', // Shadow for iOS
+        elevation: 4, 
+        shadowColor: 'black', 
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 6,
         shadowOpacity: 0.25,
+    },
+    // New style for the instruction text
+    instructionText: {
+        color: '#ddb52f',
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 8,
     },
     numberInput: {
         height: 50,
@@ -87,9 +90,9 @@ const Styles = StyleSheet.create({
         marginVertical: 8,
     },
     buttonsContainer: {
-        flexDirection: 'row', // Places buttons side-by-side
+        flexDirection: 'row', 
     },
     buttonContainer: {
-        flex: 1, // Ensures buttons take up equal space
+        flex: 1, 
     }
 });
